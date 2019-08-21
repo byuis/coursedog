@@ -1,0 +1,89 @@
+body{
+    font-family:Arial, Helvetica, sans-serif;
+    
+}
+td.cal{background: url("cell.png") repeat; border: 1px solid #777; border-left:0}
+td.cal2{background: url("cell2.png") repeat; border: 1px solid #999; border-left:0}
+td.room{width:60px; text-align:center; overflow: hidden;}
+td.day{width:20;text-align:center;color:white;background-color:#777;font-weight: bold;border:2px solid white}
+table.cal {border-collapse: collapse; width:1765}
+div.section{position: absolute;
+            opacity:0.7;
+            top:2px; 
+            height:16px;
+            padding:2px;
+            border-radius: 50em; 
+            padding-left:10px;
+            background-color:#777;
+            font-weight: bold;
+           
+}
+div.IS{background-color:blue; color:white}
+div.M_COM{background-color:rgb(68, 2, 155); color:white}
+div.EXDM{background-color:rgb(97, 11, 0); color:white}
+div.STRAT{background-color:rgb(50, 205, 205); color:black}
+div.ENT{background-color:rgb(8, 83, 1); color:white}
+div.Devotional{background-color:rgb(21, 41, 19); color:white}
+
+
+div.day{position:relative;height:24}
+#time_header {
+    height:24;
+    margin-left:88;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    background-color: #fffffe;
+    width:1677px;
+    z-index:2;
+    border-bottom: 1px solid #777;
+  }
+div.time_label{
+    position: absolute;
+    height:16px;
+    padding:2px; 
+    margin:2px;
+    font-weight:bold;
+    background-color: #666;
+    color:#ccc;
+    width:114;
+    text-align:center;
+    border-radius: 5px; 
+}
+
+.tooltip {
+position: relative;
+display: inline-block;
+border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+visibility: hidden;
+width: 120px;
+background-color: black;
+color: #fff;
+text-align: center;
+border-radius: 6px;
+padding: 5px 0;
+position: absolute;
+z-index: 10;
+top: 150%;
+left: 50%;
+margin-left: -60px;
+}
+
+.tooltip .tooltiptext::after {
+content: "";
+position: absolute;
+bottom: 100%;
+left: 50%;
+margin-left: -5px;
+border-width: 5px;
+border-style: solid;
+border-color: transparent transparent black transparent;
+}
+
+.tooltip:hover .tooltiptext {
+visibility: visible;
+}
+
