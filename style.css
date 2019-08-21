@@ -8,7 +8,7 @@ td.room{width:60px; text-align:center; overflow: hidden;}
 td.day{width:20;text-align:center;color:white;background-color:#777;font-weight: bold;border:2px solid white}
 table.cal {border-collapse: collapse; width:1765}
 div.section{position: absolute;
-            opacity:0.7;
+            opacity:0.8;
             top:2px; 
             height:16px;
             padding:2px;
@@ -52,38 +52,43 @@ div.time_label{
 }
 
 .tooltip {
-position: relative;
-display: inline-block;
-border-bottom: 1px dotted black;
-}
+    position: relative;
+    display: inline-block;
+   
 
-.tooltip .tooltiptext {
-visibility: hidden;
-width: 120px;
-background-color: black;
-color: #fff;
-text-align: center;
-border-radius: 6px;
-padding: 5px 0;
-position: absolute;
-z-index: 10;
-top: 150%;
-left: 50%;
-margin-left: -60px;
-}
-
-.tooltip .tooltiptext::after {
-content: "";
-position: absolute;
-bottom: 100%;
-left: 50%;
-margin-left: -5px;
-border-width: 5px;
-border-style: solid;
-border-color: transparent transparent black transparent;
-}
+  }
+  
+  .tooltip .tooltiptext {
+    visibility: hidden;
+    width: 200px;
+    background-color: khaki;
+    color: black;
+    text-align: center;
+    border-radius: 6px;
+    position: absolute;
+    z-index: 1;
+    bottom: 150%;
+    left: 50%;
+    margin-left: -60px;
+    font-size: 14px;
+    padding:10px;
+    border:1px solid black
+  }
+  
+  .tooltip .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: black transparent transparent transparent;
+  }
+  
 
 .tooltip:hover .tooltiptext {
 visibility: visible;
+
 }
 

@@ -29,13 +29,15 @@ function get_calendar(){
         let pos =  cal.events[i].data.courseCode.lastIndexOf(" ");
         let dept = cal.events[i].data.courseCode.substr(0,pos);
         let class_no = cal.events[i].data.courseCode.substr(pos+1);
+        let course_name = cal.events[i].data.courseName.split(" (")[0];
+        let professors = cal.events[i].data.professors;
         let section_no=parseInt(cal.events[i].data.sectionNumber);
         let start_time = cal.events[i].start;
         let end_time = cal.events[i].end;
 
         console.log("building",building,"room",room,"days",days,"pos",pos,"dept",dept,"class_no",class_no,"section_no",section_no,"start_time",start_time,"end_time",end_time)
         for (var j=0;j<days.length;j++){
-            add_section(building,room,days[j],dept,class_no,section_no,start_time,end_time);
+            add_section(building,room,days[j],dept,class_no,course_name,professors,section_no,start_time,end_time);
         }
         
         
@@ -44,10 +46,10 @@ function get_calendar(){
   }
 
 
-  function add_section(building,room, day, dept,class_no, section_no,start_time,end_time){
+  function add_section(building,room, day, dept,class_no, course_name,professors, section_no,start_time,end_time){
     let start = time_to_pixels(start_time)  ;
     let duration = time_to_pixels(end_time)  - start - 12;
-    let section_template = '<div class="_DEPTID_ section tooltip" style="width:_DURATION_px; left:_START_px;">_DEPT_ _CLASS_NO_-_SECTION_NO_<span class="tooltiptext">Tooltip text is</span></div>'  
+    let section_template = '<div class="_DEPTID_ section tooltip" style="width:_DURATION_px; left:_START_px;">_DEPT_ _CLASS_NO_-_SECTION_NO_<span class="tooltiptext" >_COURSENAME_<hr>_PROFESSORS_</span></div>'  
     section_template=section_template.replace(/_BUILDING_/g, building );
     section_template=section_template.replace(/_ROOM_/g, room );
     section_template=section_template.replace(/_DAY_/g, day );
@@ -57,6 +59,8 @@ function get_calendar(){
     section_template=section_template.replace(/_SECTION_NO_/g, section_no );
     section_template=section_template.replace(/_START_/g, start );
     section_template=section_template.replace(/_DURATION_/g, duration );
+    section_template=section_template.replace(/_COURSENAME_/g, course_name );
+    section_template=section_template.replace(/_PROFESSORS_/g, professors );
     //section_template=section_template.replace(/__/g,  );
     
     
@@ -120,6 +124,6 @@ function get_calendar(){
     table_row_1=!table_row_1;
     //console.log(room_template);
     $("#calendar").append($(room_template));
-    add_section(building, room, "T","Devotional","","","1970-01-04T11:00","1970-01-04T12:00");
+    add_section(building, room, "T","Devotional","","University Devotional","","","1970-01-04T11:00","1970-01-04T12:00");
   }
 
