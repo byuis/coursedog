@@ -2,8 +2,26 @@ body{
     font-family:Arial, Helvetica, sans-serif;
     
 }
-td.cal{background: url("cell.png") repeat; border: 1px solid #777; border-left:0}
-td.cal2{background: url("cell2.png") repeat; border: 1px solid #999; border-left:0}
+.spoiler {
+  outline: 1px solid transparent;
+}
+.spoiler span {
+  visibility: hidden;
+}
+.spoiler:hover span {
+  visibility: visible;
+}
+
+a:link {color: black;text-decoration:none}
+a:visited {color: black;;text-decoration:underline}
+a:hover {color: green;text-decoration:none}
+a:active {color: black;text-decoration:none}
+
+.link:hover {color: green;text-decoration:underline;cursor: pointer;}
+
+
+td.cal2{background: url("cell.png") repeat; border: 1px solid #777; border-left:0}
+td.cal{background: url("cell2.png") repeat; border: 1px solid #999; border-left:0}
 td.room{width:60px; text-align:center; overflow: hidden;}
 td.day{width:20;text-align:center;color:white;background-color:#777;font-weight: bold;border:2px solid white}
 table.cal {border-collapse: collapse; width:1765}
