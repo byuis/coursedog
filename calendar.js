@@ -7,9 +7,6 @@ let dept_list=[];
 let dept_excl=[];
 
 
-function junk(){
- hide_empty_rooms();
-}
 
 function choose_departments(){
   multi_select()
