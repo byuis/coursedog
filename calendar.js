@@ -3,11 +3,65 @@ let pixels_per_minute = 2;
 let start_hour = 7;
 let hour_count = 16;
 let room_list=[];
+let dept_list=[];
+let dept_excl=[];
+
 
 function junk(){
  hide_empty_rooms();
 }
 
+function choose_departments(){
+  multi_select()
+}
+
+function show_departments(){ // display visible departments
+  console.log("dept_list",dept_filter)
+  var sList="";
+  for(var i=0;i<dept_list.length;i++){
+    if(dept_excl.indexOf(dept_list[i])==-1){
+      sList += '<div class="dept '+dept_list[i].replace(/ /g,"_")+'" > ' + dept_list[i] + "</div>"  ;
+    }
+  }
+  $("#dept_filter").html(sList);
+  build_calendar()
+}
+
+function multi_select_ok(){
+  console.log("at multi_select_ok")
+  dept_excl = [];
+  let sList = "";
+  $('#multi_select input').each(function () {
+    if(!$(this).is(':checked')){dept_excl.push($(this).val())}
+  });
+  show_departments();
+  $("#multi_select").remove();
+}
+
+function multi_select_cancel(){
+  console.log("at multi_select_cancel")
+  $("#multi_select").remove();
+}
+
+function multi_select(){
+  let dialog =  '<div class="dialog" id="multi_select">'
+  for (let i=0;i<dept_list.length;i++){
+    if(dept_excl.indexOf(dept_list[i])==-1){
+      dialog+='<input type="checkbox" checked value="'+dept_list[i]+'"><div class="'+dept_list[i].replace(/ /g,"_")+' dept">'+dept_list[i]+'</div><br>'
+    }else{
+      dialog+='<input type="checkbox" value="'+dept_list[i]+'"><div class="'+dept_list[i].replace(/ /g,"_")+' dept">'+dept_list[i]+'</div><br>'
+    }
+  } 
+  dialog +=`
+    <div style="float:right">
+      <button onclick="multi_select_ok()">OK</button>
+      <button onclick="multi_select_cancel()">Cancel</button>
+    </div>
+  </div>  
+  `;
+  $(document.body).append($(dialog));
+  $("#multi_select").css($("#dept_filter").offset());
+}
 
 function show_room(building, room, show){
   if(show){
@@ -45,10 +99,22 @@ function meeting_count(building, room){
       
 }
 
+function process_room_filter(){
+  if($("#hide_empty").is(":checked")){
+    hide_empty_rooms();
+  }else{
+    show_all_rooms()
+  }
+}
+
+
 function hide_empty_rooms(){
-  //console.log ("",)
+  console.log ("dept_excl",dept_excl)
+  var empty_count = Math.abs(dept_excl.indexOf("Devotional") )
+  if ($("#rooms").val()) {empty_count=0}; //if the user has specified a room, then ignore devotional
+  console.log ("empty_count",empty_count)
   for (var i=0;i<room_list.length;i++){
-    if(meeting_count(room_list[i].split("_")[0],room_list[i].split("_")[1])==1){
+    if(meeting_count(room_list[i].split("_")[0],room_list[i].split("_")[1])==empty_count){
       show_room(room_list[i].split("_")[0],room_list[i].split("_")[1], false);
     }
   }
@@ -75,18 +141,14 @@ function color_bands(){
 }
 
 
+function main(){
+  init_body()
+  get_calendar()
+}
+
+
 function get_calendar(){
   var term_code=$("#term").val();
-  init_body()
-
-  if(typeof term_code == 'undefined'){
-    // only happens on fresh reload, need to read the term_code again
-    var term_code=$("#term").val()
-  }else{
-    // we have rebuilt the page since reading the term code, need to select the chose value
-    $("#term").val(term_code);
-  }
-
   var term = term_code.slice(-1);
   var year;
   if(term==5) {//fall
@@ -101,27 +163,75 @@ function get_calendar(){
   console.log("term_code",term_code)
 
   $.getScript( "https://script.google.com/macros/s/AKfycbxT7gYT5yO1xAIeUmXBIVlCmVe4QI2213XvyuG0wpSgcaCD7_L6/exec?year=" + year + "&semester=" + term + "&departments=1517", function( data, textStatus, jqxhr ) {
+    dept_list=[];
     build_calendar();
+    show_departments();
   });
+}
+function apply_filters(){
+
+  build_calendar();
+
 
 }
+
+
 function init_body(){
   $("body").html(`
-  <button onclick="junk()">Hide Empty Rooms</button>
-  <button onclick="show_all_rooms()">Show All Rooms</button>
-  <select id="term" onchange="get_calendar()">
-    <option value="20203">Spring 2020</option>option>
-    <option value="20204">Summer 2020</option>option>
-  </select>
+  <table align="center" border="1" cellpadding="4" style="border-collapse:collapse">
+    <tr>  
+      <th>
+        Term
+      </th>
+      <td>
+        <select id="term" onchange="get_calendar()">
+          <option value="20203">Spring 2020</option>option>
+          <option value="20204">Summer 2020</option>option>
+        </select>
+      </td>
+    </tr>
+
+    <tr>  
+      <th>
+        Rooms
+      </th>
+      <td>
+        <input type="checkbox" id="hide_empty" onclick="process_room_filter()"> Hide Empty Rooms
+      </td>
+    </tr>
+
+
+    <tr>  
+      <th>
+        Departments
+      </th>
+      <td>
+        <div id="dept_filter" onclick="choose_departments()">All</div>
+      </td>
+    </tr>
+    <tr>  
+        <th>
+        Courses
+      </th>
+      <td>
+        <textarea rows="5" cols="80" id="rooms" onchange="build_calendar()" placeholder="Comma separated list of courses (e.g. IS 201, M COM 320)"></textarea>
+      </td>
+    </tr>
+
+
+    </table>
+
   <br/>
   <div id="time_header"></div>  
-  <table class="cal" id="calendar"></table>
+  <div id="calendar_div">
+  
+  </div>
 `);  
 }
 
 function build_calendar(){
 
-
+  $("#calendar_div").html('<table class="cal" id="calendar"></table>');
 
     console.log(cal)
     //console.log($("#term").val())
@@ -169,14 +279,22 @@ function build_calendar(){
         
         
     }
+    process_room_filter();
     
   }
 
 
   function add_section(building,room, day, dept,class_no, course_name,professors, section_no,start_time,end_time){
+    if(dept_excl.indexOf(dept)>-1){return;}
+    if($("#rooms").val()){
+      if($("#rooms").val().toUpperCase().indexOf(dept + " " + class_no)==-1){return;}
+    }
     let start = time_to_pixels(start_time)  ;
     let duration = time_to_pixels(end_time)  - start - 12;
     let section_template = '<div class="_DEPTID_ section tooltip" style="width:_DURATION_px; left:_START_px;">_DEPT_ _CLASS_NO_-_SECTION_NO_<span class="tooltiptext" >_COURSENAME_<hr>_PROFESSORS_</span></div>'  
+    if(dept_list.indexOf(dept)==-1){
+      dept_list.push(dept);
+    }  
     section_template=section_template.replace(/_BUILDING_/g, building );
     section_template=section_template.replace(/_ROOM_/g, room );
     section_template=section_template.replace(/_DAY_/g, day );

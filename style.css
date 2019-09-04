@@ -26,21 +26,33 @@ td.room{width:60px; text-align:center; overflow: hidden;}
 td.day{width:20;text-align:center;color:white;background-color:#777;font-weight: bold;border:2px solid white}
 table.cal {border-collapse: collapse; width:1765}
 div.section{position: absolute;
-            opacity:0.8;
-            top:2px; 
-            height:16px;
-            padding:2px;
-            border-radius: 50em; 
-            padding-left:10px;
-            background-color:#777;
-            font-weight: bold;
-           
+  opacity:0.8;
+  top:2px; 
+  height:16px;
+  padding:2px;
+  border-radius: 50em; 
+  padding-left:10px;
+  background-color:#777;
+  font-weight: bold;
+ 
+}
+div.dept{
+  height:16px;
+  padding:2px;
+  border-radius: 50em; 
+  margin-right:4px;
+  padding-left:8px;
+  padding-right:8px;
+  background-color:#777;
+  font-weight: bold;
+  display: inline-block;
 }
 div.IS{background-color:blue; color:white}
 div.M_COM{background-color:rgb(68, 2, 155); color:white}
 div.EXDM{background-color:rgb(97, 11, 0); color:white}
 div.STRAT{background-color:rgb(50, 205, 205); color:black}
 div.ENT{background-color:rgb(8, 83, 1); color:white}
+div.HRM{background-color:rgb(82, 200, 137); color:black}
 div.Devotional{background-color:rgb(21, 41, 19); color:white}
 
 
@@ -110,3 +122,13 @@ visibility: visible;
 
 }
 
+.dialog{
+  position:absolute;
+  top:20;
+  left:100;
+  background-color:#ddd;
+  width: 200px;
+  padding:10px;
+  border:1px solid black;
+  z-index:3;
+}
