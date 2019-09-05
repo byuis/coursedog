@@ -57,13 +57,11 @@ function picker_show(div_id,list,chosen){
       dialog+='<div id="a'+Math.random().toString().substring(2)+'" onclick="picker_pill_click(this, \''+div_id+'\','+div_id+'_chosen)" class="'+get_dept(list[i]).replace(/ /g,"_")+' pill">'+list[i]+'</div>'
     }
   } 
-  console.log("after loop")
   dialog +='<div style="float:right"><br/><button onclick="picker_close(\'' + div_id + '_picker\')">Close</button></div></div>'; 
  
   $(document.body).append($(dialog));
   let offset = $("#" + div_id).offset();
   let h=$("#" + div_id).height();
-  console.log("h",h)
   if(h==0)h=15;
   $("#" + div_id + "_picker").css({top:offset.top+h,left:offset.left});
 
@@ -161,9 +159,7 @@ function main(){
   $("#hide_empty").prop('checked', get_parameter("h")); //.val(get_parameter("h"))
   
   let t=get_parameter("t");
-  console.log("t",t)
   if(t!="null"){
-    console.log(1)
     $("#term").val(t)
   }
   
@@ -204,9 +200,6 @@ function get_calendar(){
     inst_chosen = place_params("i","inst")
     dept_chosen = place_params("d","dept")
     course_chosen = place_params("c","course")
-    console.log("inst_chosen",inst_chosen)
-    console.log("dept_chosen",dept_chosen)
-    console.log("course_chosen",course_chosen)
     build_calendar();
   });
 }
@@ -225,10 +218,6 @@ function build_lists(){
   course_list.sort();
   dept_list.sort();
   inst_list.sort();
-
-  console.log("course_list",course_list);
-  console.log("dept_list",dept_list);
-  console.log("inst_list",inst_list);
 }
 
 
@@ -274,8 +263,8 @@ function build_calendar(){
 
   $("#calendar_div").html('<table class="cal" id="calendar"></table>');
 
-    console.log(cal)
-    //console.log($("#term").val())
+    //console.log(cal)
+    
     //add time labels
     for(var i=0;i<14;i++){
       $("#time_header").append($('<div class="time_label" style="left:'+(120*i)+'px">'+((i+6)%12+1)+':00</div>')) 
@@ -288,7 +277,6 @@ function build_calendar(){
        //if (room_list.indexOf(cal.rooms[i].id.split("_")[0]+"_"+cal.rooms[i].id.split("_")[1])==-1){
        //console.log(i , cal.rooms[i].id.split("_")[2],$("#term").val())  
        if (cal.rooms[i].id.split("_")[2]==$("#term").val()){
-         console.log("match")
          add_room(cal.rooms[i].id.split("_")[0],cal.rooms[i].id.split("_")[1]);
          room_list.push(cal.rooms[i].id.split("_")[0]+"_"+cal.rooms[i].id.split("_")[1])
        }
@@ -309,7 +297,6 @@ function build_calendar(){
         let section_no=parseInt(cal.events[i].data.sectionNumber);
         let start_time = cal.events[i].start;
         let end_time = cal.events[i].end;
-        console.log("term: ",term)
         //console.log("building",building,"room",room,"days",days,"pos",pos,"dept",dept,"class_no",class_no,"section_no",section_no,"start_time",start_time,"end_time",end_time)
         for (var j=0;j<days.length;j++){
           if(term==$("#term").val()){
