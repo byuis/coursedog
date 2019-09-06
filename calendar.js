@@ -13,6 +13,26 @@ let inst_chosen=[];
 let course_chosen=[];
 
 
+
+function clear_filter(){
+   dept_chosen=[];
+   inst_chosen=[];
+   course_chosen=[];
+   $("#dept").html("");
+   $("#course").html("");
+   $("#inst").html("");
+   $("#hide_empty").prop('checked', false);
+   apply_filter();
+}
+
+function apply_filter(){ 
+  $(".dialog").remove(); //close any open dialogs
+  process_room_filter()
+  build_calendar()
+    
+}
+
+
 function get_dept(text){  //if text starts out like one of our departments, return the department it mathces, otherwise null string
   for(var i=0;i<dept_list.length;i++){
     if (dept_list[i]+" "==(text + ' ').substr(0,dept_list[i].length+1)){
@@ -39,12 +59,10 @@ function place_pill(text,div_id){
 function kill_pill(caller, chosen){
   chosen.splice(chosen.indexOf(caller.innerHTML),1) ;
   $("#"+caller.id).remove();
-  build_calendar();
 }
 
 function picker_close(id){
   $("#"+id).remove();
-  build_calendar();
 }
 function picker_show(div_id,list,chosen){
   //if($('#'+div_id+"_picker").length)$("#"+div_id+"_picker").remove(); 
@@ -104,7 +122,6 @@ function meeting_count(building, room){
 }
 
 function process_room_filter(){
-  update_url();
   if($("#hide_empty").is(":checked")){
     hide_empty_rooms();
   }else{
@@ -203,12 +220,7 @@ function get_calendar(){
     build_calendar();
   });
 }
-function apply_filters(){
 
-  build_calendar();
-
-
-}
 function build_lists(){
   for(var i=0;i<cal.events.length;i++){
     add_to_list(course_list,cal.events[i].data.courseCode);
@@ -435,7 +447,7 @@ function build_calendar(){
           Rooms
         </th>
         <td>
-          <input type="checkbox" id="hide_empty" onchange="process_room_filter()"> Hide Empty Rooms
+          <input type="checkbox" id="hide_empty" > Hide Empty Rooms
         </td>
       </tr>
   
@@ -465,6 +477,12 @@ function build_calendar(){
         </td>
       </tr>
   
+      </table>
+      <table  align="center" border="0" cellpadding="4" style="border-collapse:collapse;width:800">
+      <tr><td align="right">
+      <button onclick="clear_filter()">Clear Filters</button>
+      <button onclick="apply_filter()">Apply Filters</button>
+      </td></tr>
       </table>
   
     <br/>
