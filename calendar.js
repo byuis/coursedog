@@ -204,6 +204,10 @@ function get_parameter(parameterName) {
 function get_calendar(){
   var term_code=$("#term").val();
   var term = term_code.slice(-1);
+  var dept = 1517;
+  console.log("d-------------------------------------------------------------------------------------->", dept)
+  if(get_parameter("base")!="null"){dept=get_parameter("base")}
+  console.log("d-------------------------------------------------------------------------------------->", dept)
   var year;
   if(term==5) {//fall
     year=term_code.substr(0,4);
@@ -212,7 +216,7 @@ function get_calendar(){
     year=term_code.substr(0,4);
     year = (parseInt(year)-1) +'-'+ year.toString().slice(-2)
   }
-  $.getScript( "https://script.google.com/macros/s/AKfycbxT7gYT5yO1xAIeUmXBIVlCmVe4QI2213XvyuG0wpSgcaCD7_L6/exec?year=" + year + "&semester=" + term + "&departments=1517", function( data, textStatus, jqxhr ) {
+  $.getScript( "https://script.google.com/macros/s/AKfycbxT7gYT5yO1xAIeUmXBIVlCmVe4QI2213XvyuG0wpSgcaCD7_L6/exec?year=" + year + "&semester=" + term + "&departments=" + dept, function( data, textStatus, jqxhr ) {
     build_lists();
     inst_chosen = place_params("i","inst")
     dept_chosen = place_params("d","dept")

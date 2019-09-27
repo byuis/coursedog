@@ -1,0 +1,89 @@
+<html>
+<head><title>universal curl</title></head><body>
+
+<form action="http://192.168.2.131:8081/" method="POST">
+<textarea name="curl" rows="10" cols="80">
+curl https://app.coursedog.com/api/v1/byu/professors/680582482</textarea>
+<input type="submit" value="curl">
+</form>
+</body>
+</html>
+
+<!--
+
+Need to run 
+
+node /home/student/coursedog/main.js
+on janessa-henry (192.168.2.131)
+
+Here is main.js
+
+
+
+
+
+
+var http = require("http");
+var util = require('util');
+var child_process = require('child_process');
+var querystring = require('querystring');
+
+http.createServer(function (request, response) {
+
+    if(request.method == 'POST') {
+        processPost(request, response, function() {
+            response.writeHead(200, {'Content-Type': 'text/plain'});
+            var command = request.post.curl;
+            console.log("Command: " + command)
+          try{
+            var result = runCmd(command);
+            response.end(result);
+          }catch(e){
+            response.end(e.message);
+          }
+        });
+    } else {
+        response.writeHead(200, "OK", {'Content-Type': 'text/plain'});
+        response.end("Expecting a curl command via post");
+    }
+
+
+}).listen(8081);
+
+// Console will print the message
+console.log('Server running at http://127.0.0.1:8081/');
+
+function runCmd(cmd){
+  var resp = child_process.execSync(cmd);
+  var result = resp.toString('UTF8');
+  return result;
+}
+
+function processPost(request, response, callback) {
+    var queryData = "";
+    if(typeof callback !== 'function') return null;
+
+    if(request.method == 'POST') {
+        request.on('data', function(data) {
+            queryData += data;
+            if(queryData.length > 1e6) {
+                queryData = "";
+                response.writeHead(413, {'Content-Type': 'text/plain'}).end();
+                request.connection.destroy();
+            }
+        });
+
+        request.on('end', function() {
+            request.post = querystring.parse(queryData);
+            callback();
+        });
+
+    } else {
+        response.writeHead(405, {'Content-Type': 'text/plain'});
+        response.end();
+    }
+}
+
+
+
+-->
