@@ -179,6 +179,10 @@ function main(){
   if(t!="null"){
     $("#term").val(t)
   }
+  let u=get_parameter("u");
+  if(u!="null"){
+    $("#unit").val(u)
+  }
   
 /*
   // read params
@@ -204,10 +208,7 @@ function get_parameter(parameterName) {
 function get_calendar(){
   var term_code=$("#term").val();
   var term = term_code.slice(-1);
-  var dept = 1517;
-  console.log("d-------------------------------------------------------------------------------------->", dept)
-  if(get_parameter("base")!="null"){dept=get_parameter("base")}
-  console.log("d-------------------------------------------------------------------------------------->", dept)
+  var unit = $("#unit").val();
   var year;
   if(term==5) {//fall
     year=term_code.substr(0,4);
@@ -216,8 +217,9 @@ function get_calendar(){
     year=term_code.substr(0,4);
     year = (parseInt(year)-1) +'-'+ year.toString().slice(-2)
   }
-  $.getScript( "https://script.google.com/macros/s/AKfycbxT7gYT5yO1xAIeUmXBIVlCmVe4QI2213XvyuG0wpSgcaCD7_L6/exec?year=" + year + "&semester=" + term + "&departments=" + dept, function( data, textStatus, jqxhr ) {
+  $.getScript( "https://script.google.com/macros/s/AKfycbxT7gYT5yO1xAIeUmXBIVlCmVe4QI2213XvyuG0wpSgcaCD7_L6/exec?year=" + year + "&semester=" + term + "&departments=" + unit, function( data, textStatus, jqxhr ) {
     build_lists();
+    unit_chosen = place_params("u","unit")
     inst_chosen = place_params("i","inst")
     dept_chosen = place_params("d","dept")
     course_chosen = place_params("c","course")
@@ -269,7 +271,7 @@ function update_url(){
   if(dept_chosen.length>0)url+="&d=" + get_array_param(dept_chosen);
   if(course_chosen.length>0)url+="&c=" + get_array_param(course_chosen);
   if(inst_chosen.length>0)url+="&i=" + get_array_param(inst_chosen);
-  url+="&t=" + $("#term").val();
+  url+="&u=" + $("#unit").val() + "&t=" + $("#term").val();
   history.pushState(null, "Term Schedule", url);
 }
 
@@ -448,6 +450,16 @@ function build_calendar(){
   
       <tr>  
         <th>
+          Unit
+        </th>
+        <td width="100%">
+          <select id="unit" onchange="get_calendar()">
+          </select>
+        </td>
+      </tr>
+
+      <tr>  
+        <th>
           Rooms
         </th>
         <td>
@@ -495,5 +507,13 @@ function build_calendar(){
     
     </div>
   `);  
+
+  Object.keys(departments).forEach(function(key,index) {
+    $('#unit').append(new Option(departments[key].name, key))
+    // key: the name of the object key
+    // index: the ordinal position of the key within the object 
+  });
+  $('#unit').val(1007);
+
   }
   
